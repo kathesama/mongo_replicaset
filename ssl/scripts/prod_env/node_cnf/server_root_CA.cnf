@@ -36,7 +36,7 @@ stateOrProvinceName         = Buenos Aires
 localityName                = Buenos Aires Capital Federal
 organizationName            = kathevigs
 organizationalUnitName         = IT
-commonName         = https://www.linkedin.com/in/kathesama
+commonName         = ServerNodeCon
 emailAddress = kathesama@gmail.com
 ####################################################################
 [ ca_extensions ]

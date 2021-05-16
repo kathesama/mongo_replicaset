@@ -14,18 +14,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/kathemica/mongo-db-granja?style=plastic)
 <br>
 
-![header](assets/header.png)
 ---
-# FIUBA - MongoDB replicaset con cuatro (04) nodos y TLS
+# MongoDB replicaset con tres nodos y TLS
 Autor
 * Ing. Katherine E. Aguirre
 <br>
-
-Haz click a continuación para ver el video tutorial.
-
-<a href="https://youtu.be/oz4PM7ZyXNM
-" target="_blank"><img src="https://i9.ytimg.com/vi/oz4PM7ZyXNM/mq1.jpg?sqp=CIzBjoMG&rs=AOn4CLAhSI6VgHJaEmkWTncGT403-LQC7Q" 
-alt="Video tutorial" width="320" border="10" /></a>
 
 <br>
 <p><i class="fas fa-exclamation-triangle" style="color:#ff9900"></i>&nbsp;&nbsp;Advertencia:</p>
@@ -37,7 +30,7 @@ Se hacen las siguientes presunciones:
 
 ---
 
-## Implementar en MongoDB un ReplicaSet con 4 servidores que contengan la información de la BD Finanzas. Un nodo Primary, un secondary y un arbiter. Finalmente un nodo secondary con delay de 120s<br>
+## Implementar en MongoDB un ReplicaSet con 3 servidores que contengan la información de las bases de datps. Un nodo Primary, un secondary y un arbiter. 
 ---
 
 Esta implementación se realizará con Docker Run, de esta manera quedarán los volúmenes corriendo de una vez, ahora procederemos:
@@ -66,14 +59,15 @@ $ sudo chmod 755 mongo-db-granja/ssl/generateCertificates.sh
 ```
 $ sudo nano config/serverCluster.conf
 ```
+* Agrega el nombre de tu RS donde indica *<INSERT YOUR RS NAME HERE>*.
 
-Insertamos los valores que indican *<INSERT YOUR KEY HERE>* tanto para la clave del certificado como para el del cluster.
+* Insertamos los valores que indican *<INSERT YOUR KEY HERE>* tanto para la clave del certificado como para el del cluster (debe ser el mismo).
 
 
 5. Luego ejecutamos el script para generar los certificados, navegamos hasta la carpeta ssl y ejecutamos el script:
 > cd mongo-db-granja/ssl/
 
-> ./generateCertificates.sh <CA Key> <Cluster Key>
+> ./generateCertificates.sh <CA Key>
 
 Luego de ejecutar el script nos queda la siguiente estructura:
 
@@ -93,8 +87,8 @@ Luego de ejecutar el script nos queda la siguiente estructura:
 -v $(pwd)/data/replica01:/data/db \
 -v $(pwd)/ssl/nodo01:/data/ssl \
 -v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mdb_admin \
--e MONGO_INITDB_ROOT_PASSWORD=mdb_pass \
+-e MONGO_INITDB_ROOT_USERNAME=YOURMONGOADMINNAME \
+-e MONGO_INITDB_ROOT_PASSWORD=MONGONADMINSECRET \
 mongo:4.4.4-bionic \
 mongod --config /data/config/serverCluster.conf
 ```
@@ -110,8 +104,8 @@ sudo docker run --name MGDB_replica02 \
 -v $(pwd)/data/replica02:/data/db \
 -v $(pwd)/ssl/nodo02:/data/ssl \
 -v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mdb_admin \
--e MONGO_INITDB_ROOT_PASSWORD=mdb_pass \
+-e MONGO_INITDB_ROOT_USERNAME=YOURMONGOADMINNAME \
+-e MONGO_INITDB_ROOT_PASSWORD=MONGONADMINSECRET \
 mongo:4.4.4-bionic \
 mongod --config /data/config/serverCluster.conf
 ```
@@ -127,8 +121,8 @@ sudo docker run --name MGDB_replicaArbiter \
 -v $(pwd)/data/replica:/data/db \
 -v $(pwd)/ssl/nodo_arbiter:/data/ssl \
 -v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mdb_admin \
--e MONGO_INITDB_ROOT_PASSWORD=mdb_pass \
+-e MONGO_INITDB_ROOT_USERNAME=YOURMONGOADMINNAME \
+-e MONGO_INITDB_ROOT_PASSWORD=MONGONADMINSECRET \
 mongo:4.4.4-bionic \
 mongod --config /data/config/serverCluster.conf
 ```
@@ -137,12 +131,12 @@ mongod --config /data/config/serverCluster.conf
 
 >**NOTA: editar el archivo *config/serverCluster.conf* para insertar las claves que faltan antes de ejecutar el script (deben ser las que ya hayas seleccionado).**
 
->sh config.sh `<dev>|<prod>` <CERT_PASS> <CLUSTER_PASS>
+>sh config.sh `<dev>|<prod>` <CERT_PASS> <MONGO_ADMIN> <MONGO_KEY>
 
 Dependiendo del ambiente selecciona *dev* ó *prod*, seguido de la password del certificado CA
 
 I.e:
-> source ./config.sh dev b2RlIjoiUEdPIiwiZmFsbGJhY2tEYXRlIjoiMjAyMS UEdPIiwiZmFsbGJhY
+> source ./config.sh dev b2RlIjoiUEdPIiwiZmFsbGJhY2tEYXRlIjoiMjAyMS UEdPIiwiZmFsbGJhY mongo_admin hsdfbsaidasd
 
 *Este script ejecuta todos los pasos previos y deja el ambiente listo para configurar con los pasos que siguen.*
 
@@ -165,21 +159,21 @@ mongo --tls --tlsCertificateKeyFile /data/ssl/mdb_nodes_keycert.pem --tlsCAFile 
 Ahora creamos el archivo de configuracion del cluster
 ```
 rs.initiate({
-  "_id": "my-replica-set", 
+  "_id": "<INSERT YOUR RS NAME HERE>", 
   "version": 1, 
   "writeConcernMajorityJournalDefault": true, 
   "members": [
     { 
       "_id": 0, 
-      "host": "10.0.0.12:27017", 
+      "host": "<INSERT YOUR SERVER NAME OR IP ADDRES HERE>:27017", 
     }, 
     { 
       "_id": 1, 
-      "host": "10.0.0.12:27018", 
+      "host": "<INSERT YOUR SERVER NAME OR IP ADDRES HERE>:27018", 
     }, 
     { 
       "_id": 2, 
-      "host": "10.0.0.12:27019", 
+      "host": "<INSERT YOUR SERVER NAME OR IP ADDRES HERE>:27019", 
       arbiterOnly: true 
     }
   ]
@@ -194,8 +188,8 @@ Después esto otro:
 
 ```
 db.createUser({
-  user: "mdb_admin",
-  pwd: "mdb_pass",
+  user: "<YOURMONGOADMINNAME>",
+  pwd: "<YOURMONGOADMINSECRET>",
   roles: [
     {role: "root", db: "admin"},
     { role: "userAdminAnyDatabase", db: "admin" }, 
@@ -464,170 +458,7 @@ Deberiamos poder ver las dos colecciones que se crearon en el otro nodo.
 
 ![secondaryBeforeRecovery](assets/secondaryBeforeRecovery.PNG)
 
----
-##  Agregar un nuevo nodo con slaveDelay de 120 segundos.
----
 
-Por cada nuevo nodo que se agregue se deben crear sus respectivas credenciales TLS y levantar la instancia en mongo, para ello:
-
-- vamos a la carpeta *ssl/node_cnf* y ejecutamos lo siguiente recordando cambiar *ZZ* por el número de nodo a agregar:
-
-> cp node_cnf/nodoXX_CN.cnf node_cnf/nodoZZ_CN.cnf
-
-Editamos el commonName que está en la sección server_distinguished_name, colocamos el nombre del nuevo nodo a agregar
-
-> nano node_cnf/nodoZZ_CN.cnf
-
-Finalmente ejecutamos el script de *addNode*
-
-.- Primer parámetro el nombre del nuevo nodo, debe tener formato aaaaNN, tal como el nombre del archivo de configuracion (sin el _CN.cnf):
-
-.- Segundo parámetro la clave del certificado CA
-
-> source ./addNode.sh nodo03 b2RlIjoiUEdPIiwiZmFsbGJhY2tEYXRlIjoiMjAyMS
-
-Si nos da error de ejecuciótreen entonces vamos a la carpeta ssl y le damos permiso de ejecutación al script addNode.sh
-
-> sudo chmod 775 addNode.sh
-
-Finalmente nos crea una nueva carpeta con el nombre del nuevo nodo y los respectivos certificados. Ahora agregamos el contenedor en Docker: 
-
-Primero creamos la carpeta de datos en la carpeta data, para ellos vamos a la raíz del proyecto y ejecutamos:
-
-*NOTA: replicaXX es el nombre de la carpeta data del nuevo nodo, cambie el nombre*
-
-> mkdir data/replicaXX
-
-Luego cambie los parámetros del siguiente código según comop se muestra:
-
---name por el nombre del contenedor, reemplaza XX por el numero de nodo, este es el tres (03)
--p recuerda ajustar el puerto para que siga la secuencia o al menos no coincida con alguno ya ocupado, cambia XX (el último era 19)
---v replicaXX por el nombre de la carpeta data
---v NODO_XX por el nombre del nodo donde estan los certificados
-
-```
- sudo docker run --name MGDB_replicaXX \
--p 270XX:27017 \
---restart always \
--e "TZ=America/Argentina/Buenos_Aires" \
--e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=1' \
--v $(pwd)/data/replicaXX:/data/db \
--v $(pwd)/ssl/nodoXX:/data/ssl \
--v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mdb_admin \
--e MONGO_INITDB_ROOT_PASSWORD=mdb_pass \
-mongo:4.4.4-bionic \
-mongod --config /data/config/serverCluster.conf
-```
-
-Finalmente lo ejecutamos en la consola y esperamos a que termine de cargar en Docker el nuevo nodo, puedes ver su status en el log de portainer.
-
-![portainerNode03.PNG](assets/portainerNode03.PNG)
-
-Luego tenemos que entrar al replicaset para configurar el nuevo nodo:
-
-Entramos al nodo01
-
->$ docker exec -it MGDB_replica01 /bin/bash
-
-Luego nos logueamos
-
->$ mongo --tls --tlsCertificateKeyFile /data/ssl/mdb_nodes_keycert.pem --tlsCAFile /data/ssl/server_root_CA.crt --tlsCertificateKeyFilePassword b2RlIjoiUEdPIiwiZmFsbGJhY2tEYXRlIjoiMjAyMS -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --tlsAllowInvalidHostnames
-
-Y ejecutamos... **Recuerda cambiar XX por el numero de nodo y YY por el nuevo puerto**:
-
-> rs.add({host:"<IP ADRESS OR NAME>:270YY",priority:0,slaveDelay:120});
-
-Para este caso es:
-
-> rs.add({host:"10.0.0.12:27020",priority:0,slaveDelay:120});
-
-
-![addNewRSNode.PNG](assets/addNewRSNode.PNG)
-
-Luego al consultar el detalle del archivo de configuracion
-
-> rs.config()
-
-![slaveDelayInfo.PNG](assets/slaveDelayInfo.PNG)
-
-
----
-##  Ejecutar una nueva carga de datos, asegurarse antes de ejecutarlo que el nodo con slaveDelay esté actualizado igual que el PRIMARY.
----
-
-Una vez creado el nuevo nodo debemos esperar que pasen 2 minutos y consultar:
-
-Entramos al nodo03
-
->$ docker exec -it MGDB_replica03 /bin/bash
-
-Luego nos logueamos
-
->$ mongo --tls --tlsCertificateKeyFile /data/ssl/mdb_nodes_keycert.pem --tlsCAFile /data/ssl/server_root_CA.crt --tlsCertificateKeyFilePassword b2RlIjoiUEdPIiwiZmFsbGJhY2tEYXRlIjoiMjAyMS -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --tlsAllowInvalidHostnames
-
-> rs.secondaryOk();
-
-> show dbs;
-
-Acá deberiamos ver la base de datos IoT creada, entramos a ella y consultamos las collections:
-
-> show collections
-
-tendriamos que poder las dos colections que posee *iot*
-
-Ahora vamos a una consola y nos situamos en el root del proyecto, ejecutamos nuevamente una carga de datos para generar mas registros
-
-> node app
-
-Esta vez consultaremos un registro de la DB que deberia tener tantas lecturas como ejecuciones hayamos hecho de la app de node
-
-```
-db.devices.aggregate([
-  { $match: {deviceId: 1029384756}},
-  {"$unwind": "$lectures"}, 
-  { $group: {
-        _id: {
-            deviceId: "$deviceId",
-            sensor: "$sensor"
-        },
-        lectures: { $push: "$lectures" },count : { $sum : 1 }
-    }
-}])
-```
-
-Nos debería dar este resultado:
-
-```
-[ { _id: { deviceId: 1029384756, sensor: 'SensorHT' },
-    lectures: 
-     [ { temperature: 
-          { timestamp: 2021-03-30T02:48:41.737Z,
-            value: 10.192585737609974 },
-         humidity: { timestamp: 2021-03-30T02:48:41.737Z, value: 45 } },
-       { temperature: 
-          { timestamp: 2021-03-30T02:48:58.296Z,
-            value: 29.761273726645364 },
-         humidity: { timestamp: 2021-03-30T02:48:58.296Z, value: 97 } },
-       { temperature: 
-          { timestamp: 2021-03-30T02:49:28.473Z,
-            value: -0.864591605113251 },
-         humidity: { timestamp: 2021-03-30T02:49:28.473Z, value: 60 } },
-       { temperature: 
-          { timestamp: 2021-03-30T03:27:00.015Z,
-            value: 12.70649965731462 },
-         humidity: { timestamp: 2021-03-30T03:27:00.015Z, value: 54 } } ],
-    count: 4 } ]
-```
-
-Nótese que count es 4, es la cantidad de ejecuciones que hicimos por lo que el nuevo nodo ya está actualizado.
-
-
----
-##  Luego de ejecutado chequear el SECONDARY y Consultar el nuevo nodo y ver cuando se actualizan los datos.
----
-
-El secondary muestra inmediatamente el nuevo registro luego de hacer una insercion, cosa que no pasa con el que está con el delay de 120 que lo hace luego de 2 minutos.
 
 ---
 ## **Comandos útiles**
