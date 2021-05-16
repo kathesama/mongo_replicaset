@@ -2,6 +2,8 @@
 clear
 echo "Ambiente: $1";
 echo "CA Pass: $2";
+echo "Mongo User: $3";
+echo "Mongo Pass: $4";
 
 #-------------------------------------------------------------------------------------------------
 printf "\n"
@@ -25,7 +27,7 @@ sudo rm -r ssl/scripts
 #-------------------------------------------------------------------------------------------------
 printf '\e[1;32m%-6s\e[m' "3 Otorgando permisos de ejecución al script de generación de certificados..."
 printf "\n"
-sudo chmod 755 ssl/generateCertificates.sh 
+sudo chmod 755 ssl/generateCertificates.sh
 
 #-------------------------------------------------------------------------------------------------
 printf '\e[1;32m%-6s\e[m' "4 Yendo a la carpeta del script..."
@@ -34,7 +36,7 @@ cd ssl/
 
 #-------------------------------------------------------------------------------------------------
 printf '\e[1;32m%-6s\e[m' "5 Generando certificados..."
-printf "\n" 
+printf "\n"
 
 sh generateCertificates.sh $2
 
@@ -56,8 +58,8 @@ docker run --name MGDB_replica01 \
 -v $(pwd)/data/replica01:/data/db \
 -v $(pwd)/ssl/nodo01:/data/ssl \
 -v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mongo_admin \
--e MONGO_INITDB_ROOT_PASSWORD=<INSERT YOUR MONGO KEY HERE> \
+-e MONGO_INITDB_ROOT_USERNAME=$3 \
+-e MONGO_INITDB_ROOT_PASSWORD=$4 \
 mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
@@ -72,8 +74,8 @@ sudo docker run --name MGDB_replica02 \
 -v $(pwd)/data/replica02:/data/db \
 -v $(pwd)/ssl/nodo02:/data/ssl \
 -v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mongo_admin \
--e MONGO_INITDB_ROOT_PASSWORD=<INSERT YOUR MONGO KEY HERE> \
+-e MONGO_INITDB_ROOT_USERNAME=$3 \
+-e MONGO_INITDB_ROOT_PASSWORD=$4 \
 mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
@@ -88,8 +90,8 @@ sudo docker run --name MGDB_replicaArbiter \
 -v $(pwd)/data/replicaarbiter:/data/db \
 -v $(pwd)/ssl/nodo_arbiter:/data/ssl \
 -v $(pwd)/config:/data/config \
--e MONGO_INITDB_ROOT_USERNAME=mongo_admin \
--e MONGO_INITDB_ROOT_PASSWORD=<INSERT YOUR MONGO KEY HERE> \
+-e MONGO_INITDB_ROOT_USERNAME=$3 \
+-e MONGO_INITDB_ROOT_PASSWORD=$4 \
 mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
