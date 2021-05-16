@@ -4,14 +4,14 @@
 [<img src="https://img.shields.io/badge/Linkedin-kathesama-blue?style=for-the-badge&logo=linkedin">](https://www.linkedin.com/in/kathesama)
 ![MongoDB](https://img.shields.io/badge/-MongoDB-009900?logo=mongodb&logoColor=white&style=for-the-badge)
 <br>
-[![GitHub issues](https://img.shields.io/github/issues/kathemica/mongodb-replicaset?style=plastic)](https://github.com/kathemica/mongodb-replicaset/issues)
-[![GitHub forks](https://img.shields.io/github/forks/kathemica/mongodb-replicaset?style=plastic)](https://github.com/kathemica/mongodb-replicaset/network)
-[![GitHub stars](https://img.shields.io/github/stars/kathemica/mongodb-replicaset?style=plastic)](https://github.com/kathemica/mongodb-replicaset/stargazers)
-![GitHub last commit](https://img.shields.io/github/last-commit/kathemica/mongodb-replicaset?color=red&style=plastic)
-![GitHub top language](https://img.shields.io/github/languages/top/kathemica/mongodb-replicaset?style=plastic)
+[![GitHub issues](https://img.shields.io/github/issues/kathemica/mongo-db-granja?style=plastic)](https://github.com/kathemica/mongo-db-granja/issues)
+[![GitHub forks](https://img.shields.io/github/forks/kathemica/mongo-db-granja?style=plastic)](https://github.com/kathemica/mongo-db-granja/network)
+[![GitHub stars](https://img.shields.io/github/stars/kathemica/mongo-db-granja?style=plastic)](https://github.com/kathemica/mongo-db-granja/stargazers)
+![GitHub last commit](https://img.shields.io/github/last-commit/kathemica/mongo-db-granja?color=red&style=plastic)
+![GitHub top language](https://img.shields.io/github/languages/top/kathemica/mongo-db-granja?style=plastic)
 <br>
-[![GitHub license](https://img.shields.io/github/license/kathemica/mongodb-replicaset?style=plastic)](https://github.com/kathemica/mongodb-replicaset/blob/main/LICENSE)
-![GitHub repo size](https://img.shields.io/github/repo-size/kathemica/mongodb-replicaset?style=plastic)
+[![GitHub license](https://img.shields.io/github/license/kathemica/mongo-db-granja?style=plastic)](https://github.com/kathemica/mongo-db-granja/blob/main/LICENSE)
+![GitHub repo size](https://img.shields.io/github/repo-size/kathemica/mongo-db-granja?style=plastic)
 <br>
 
 ![header](assets/header.png)
@@ -44,22 +44,22 @@ Esta implementación se realizará con Docker Run, de esta manera quedarán los 
 
 1. Ir a la carpeta donde se van a guardar los datos y clonar el respositorio:
 
-> git clone https://github.com/kathemica/mongodb-replicaset.git
+> git clone https://github.com/kathemica/mongo-db-granja.git
 
 2. Ahora vamos a mover los archivos necesarios para correr el script, desde la misma carpeta ejecutamos: 
 ```
-$ sudo mv -v mongodb-replicaset/ssl/scripts/prod_env/* mongodb-replicaset/ssl/
+$ sudo mv -v mongo-db-granja/ssl/scripts/prod_env/* mongo-db-granja/ssl/
 ```
 **NOTA: dependiendo del ambiente selecciona: *prod_env* ó *dev_env***
 
 Luego para dejar más limpia la estructura removemos la carpeta que no nos hace falta:
 ```
-$ sudo rm -r mongodb-replicaset/ssl/scripts
+$ sudo rm -r mongo-db-granja/ssl/scripts
 ```
 
 3. Ahora procederemos a cambiar los permisos del script:
 ```
-$ sudo chmod 755 mongodb-replicaset/ssl/generateCertificates.sh
+$ sudo chmod 755 mongo-db-granja/ssl/generateCertificates.sh
 ```
 
 4. Una vez hecho esto debemos actualizar el archivo de configuración, para esto ejecutaremos:
@@ -71,7 +71,7 @@ Insertamos los valores que indican *<INSERT YOUR KEY HERE>* tanto para la clave 
 
 
 5. Luego ejecutamos el script para generar los certificados, navegamos hasta la carpeta ssl y ejecutamos el script:
-> cd mongodb-replicaset/ssl/
+> cd mongo-db-granja/ssl/
 
 > ./generateCertificates.sh <CA Key> <Cluster Key>
 

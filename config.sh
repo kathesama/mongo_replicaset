@@ -2,7 +2,6 @@
 clear
 echo "Ambiente: $1";
 echo "CA Pass: $2";
-echo "Cluster Pass: $3";
 
 #-------------------------------------------------------------------------------------------------
 printf "\n"
@@ -36,7 +35,7 @@ cd ssl/
 #-------------------------------------------------------------------------------------------------
 printf '\e[1;32m%-6s\e[m' "5 Generando certificados..."
 printf "\n" 
-sh generateCertificates.sh $2 $3
+sh generateCertificates.sh $2
 cd ..
 
 #-------------------------------------------------------------------------------------------------
@@ -79,7 +78,7 @@ mongod --config /data/config/serverCluster.conf
 #-------------------------------------------------------------------------------------------------
 printf '\e[1;34m%-6s\e[m' "6.3 Nodo Arbiter"
 printf "\n"
-sudo docker run --name MGDB_replicaArbiter \
+sudo docker run --name MGDB_replicaArbiter2 \
 -p 27019:27017 \
 --restart always \
 -e "TZ=America/Argentina/Buenos_Aires" \
