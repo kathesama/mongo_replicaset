@@ -80,7 +80,7 @@ mongod --config /data/config/serverCluster.conf
 #-------------------------------------------------------------------------------------------------
 printf '\e[1;34m%-6s\e[m' "6.3 Nodo Arbiter"
 printf "\n"
-sudo docker run --name MGDB_replicaArbiter2 \
+sudo docker run --name MGDB_replicaArbiter \
 -p 27019:27017 \
 --restart always \
 -e "TZ=America/Argentina/Buenos_Aires" \
