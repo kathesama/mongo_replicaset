@@ -39,6 +39,13 @@ Esta implementación se realizará con Docker Run, de esta manera quedarán los 
 
 > git clone https://github.com/kathemica/mongo-db-granja.git
 
+**NOTA IMPORTANTE**: Ajustar las direcciones IP o nombres en los archivos ubicados en *mongo-db-granja/ssl/scripts/prod_<dev|prod>* para que sean las de tu servidor. 
+
+Específicamente serían:
+- nodo_arbiter
+- nodo01_CN
+- nodo02_CN
+
 2. Ahora vamos a mover los archivos necesarios para correr el script, desde la misma carpeta ejecutamos: 
 ```
 $ sudo mv -v mongo-db-granja/ssl/scripts/prod_env/* mongo-db-granja/ssl/
@@ -318,7 +325,7 @@ Vamos a verificar los datos usando mongo compass. Para ello debemos tener acceso
 
 **NOTA: es posible que te aparezca un error cuando estés copiando el certificado client.key, lo resolvemos ejecuntando:**
 
->  sudo chmod 775 client.key
+>  sudo chmod 775 ssl/client/client.key
 
 a. La herramienta se llama [MongoDB Compass](https://www.mongodb.com/try/download/compass "The database for
 modern applications"), seguimos el link, descargamos e instalamos.
