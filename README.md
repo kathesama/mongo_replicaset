@@ -466,6 +466,16 @@ Deberiamos poder ver las dos colecciones que se crearon en el otro nodo.
 ![secondaryBeforeRecovery](assets/secondaryBeforeRecovery.PNG)
 
 
+---
+##  Renovar los certificados
+---
+Ejecutar en ./ssl 
+
+> source ./renewClientCerts.sh <CA_KEY_PASS>
+
+Luego copiar los nuevos certificadosy usarlos.
+
+.
 
 ---
 ## **Comandos útiles**
