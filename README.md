@@ -467,15 +467,15 @@ Deberiamos poder ver las dos colecciones que se crearon en el otro nodo.
 
 
 ---
-##  Renovar los certificados
+##  **Renovar los certificados cuando se hayan vencido**
 ---
-Ejecutar en ./ssl 
+
+Cuando los certificados se vencen extrañamente dan error de: Username not specified, para resolver eso solo hay que renovar los certificados del cliente y ya, para ello ejecutar en la carpeta ./ssl
 
 > source ./renewClientCerts.sh <CA_KEY_PASS>
 
-Luego copiar los nuevos certificadosy usarlos.
+Luego copiar los nuevos certificados y usarlos.
 
-.
 
 ---
 ## **Comandos útiles**
