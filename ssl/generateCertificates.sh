@@ -29,10 +29,12 @@ NodeArbiter_CNF="${CONFS_FILES_DIR}nodo_arbiter_CN.cnf"
 #-------------------------------------------------------------------
 # las rutas de los certificados generados deben coincidir en el archivo serverCluster
 Server_DIR="CA"
-Server_KEY="server_root_CA.key"
-Server_CRT="server_root_CA.crt"
-Server_SRL="server_root_CA.srl"
-Server_CNF="${CONFS_FILES_DIR}server_root_CA.cnf"
+#Server_KEY="server_root_CA.key"
+Server_KEY="privkey.key"
+#Server_CRT="server_root_CA.crt"
+Server_CRT="cert.pem"
+#Server_SRL="server_root_CA.srl"
+#Server_CNF="${CONFS_FILES_DIR}server_root_CA.cnf"
 PASS_PHRASE_CA=$1
 CLUSTER_PHRASE_CA="QzzuGEjsCOURNO7xCeZyCX"
 
@@ -50,7 +52,7 @@ Client_CN_CNF="${CONFS_FILES_DIR}client_CN.cnf"
 # Orden de los parámetros
 # DIR         ----- $1 - $X_DIR
 # FILE        ----- $2 - $FILEVAR_NAME
-move_files() {    
+move_files() {
     mkdir $1 2> /dev/null
     printf "Moviendo $2 A ./$1/$2 $TXT_LOG  \n"
     mv ./$2 ./$1/$2
@@ -60,7 +62,7 @@ move_files() {
 # Orden de los parámetros
 # DIR         ----- $1 - $X_DIR
 # FILE        ----- $2 - $FILEVAR_NAME
-copy_files() {    
+copy_files() {
     mkdir $1 2> /dev/null
     printf "Copiando $2 A ./$1/$2 $TXT_LOG  \n"
     cp ./$2 ./$1/$2
@@ -77,41 +79,41 @@ copy_files() {
 # NODE .crt file  ----- $7 - $MDB_NODEX_CRT
 gen_replicakeycerts(){
     printf "\nGenerando certificados de $1 $TXT_LOG  \n"
-    
+
     mkdir $1 2> /dev/null
 
     printf "nGenerando $1 - archivos .KEY y .CSR $TXT_LOG \n"
-    
+
     openssl genrsa -des3 -out $2 -passout pass:"$PASS_PHRASE_CA" 4096
-    
+
     printf "\nGenerando $1 - archivo .CRT $TXT_LOG \n"
-    
+
     openssl req -new -config $4 -key $2 -passin pass:"$PASS_PHRASE_CA" -out $3 -config $4
     openssl x509 -req -days 365 -in $3 -CA $5 -CAkey $6 -CAcreateserial -passin pass:"$PASS_PHRASE_CA" -out $7
-    
+
     printf "\nGenerando $1 - archivo .PEM $TXT_LOG \n"
-    
+
     cat $2 $7 > $FINAL_KEYCERT_PEM
-    
+
     move_files $1 $2
     move_files $1 $3
     move_files $1 $7
     move_files $1 $FINAL_KEYCERT_PEM
     copy_files $1 $5
-    
+
     printf "\nFINALIZADO... $1 $TXT_LOG \n"
 }
 
 openssl rand -out .rnd -hex 256
 printf "INICIANDO SCRIPT $TXT_LOG \n\n"
 
-openssl genrsa -des3 -out $Server_KEY -passout pass:"$PASS_PHRASE_CA" 4096
-printf "Root CA .key OK $TXT_LOG  \n"
+#openssl genrsa -des3 -out $Server_KEY -passout pass:"$PASS_PHRASE_CA" 4096
+#printf "Root CA .key OK $TXT_LOG  \n"
 
-openssl req -x509 -new -key $Server_KEY -sha256 -passin pass:"$PASS_PHRASE_CA" -days 720 -out $Server_CRT -config $Server_CNF
-printf "Root CA .crt OK $TXT_LOG  \n"
+#openssl req -x509 -new -key $Server_KEY -sha256 -passin pass:"$PASS_PHRASE_CA" -days 720 -out $Server_CRT -config $Server_CNF
+#printf "Root CA .crt OK $TXT_LOG  \n"
 
-printf "FINALIZADO CERTIFICADO CA $TXT_LOG  \n"
+#printf "FINALIZADO CERTIFICADO CA $TXT_LOG  \n"
 
 gen_replicakeycerts $Node01_DIR $Node01_KEY $Node01_CSR $Node01_CNF $Server_CRT $Server_KEY $Node01_CRT
 gen_replicakeycerts $Node02_DIR $Node02_KEY $Node02_CSR $Node02_CNF $Server_CRT $Server_KEY $Node02_CRT
