@@ -29,12 +29,10 @@ NodeArbiter_CNF="${CONFS_FILES_DIR}nodo_arbiter_CN.cnf"
 #-------------------------------------------------------------------
 # las rutas de los certificados generados deben coincidir en el archivo serverCluster
 Server_DIR="CA"
-#Server_KEY="server_root_CA.key"
-Server_KEY="privkey.key"
-#Server_CRT="server_root_CA.crt"
-Server_CRT="cert.pem"
-#Server_SRL="server_root_CA.srl"
-#Server_CNF="${CONFS_FILES_DIR}server_root_CA.cnf"
+Server_KEY="server_root_CA.key"
+Server_CRT="server_root_CA.crt"
+Server_SRL="server_root_CA.srl"
+Server_CNF="${CONFS_FILES_DIR}server_root_CA.cnf"
 PASS_PHRASE_CA=$1
 CLUSTER_PHRASE_CA="QzzuGEjsCOURNO7xCeZyCX"
 
@@ -107,13 +105,13 @@ gen_replicakeycerts(){
 openssl rand -out .rnd -hex 256
 printf "INICIANDO SCRIPT $TXT_LOG \n\n"
 
-#openssl genrsa -des3 -out $Server_KEY -passout pass:"$PASS_PHRASE_CA" 4096
-#printf "Root CA .key OK $TXT_LOG  \n"
+openssl genrsa -des3 -out $Server_KEY -passout pass:"$PASS_PHRASE_CA" 4096
+printf "Root CA .key OK $TXT_LOG  \n"
 
-#openssl req -x509 -new -key $Server_KEY -sha256 -passin pass:"$PASS_PHRASE_CA" -days 720 -out $Server_CRT -config $Server_CNF
-#printf "Root CA .crt OK $TXT_LOG  \n"
+openssl req -x509 -new -key $Server_KEY -sha256 -passin pass:"$PASS_PHRASE_CA" -days 720 -out $Server_CRT -config $Server_CNF
+printf "Root CA .crt OK $TXT_LOG  \n"
 
-#printf "FINALIZADO CERTIFICADO CA $TXT_LOG  \n"
+printf "FINALIZADO CERTIFICADO CA $TXT_LOG  \n"
 
 gen_replicakeycerts $Node01_DIR $Node01_KEY $Node01_CSR $Node01_CNF $Server_CRT $Server_KEY $Node01_CRT
 gen_replicakeycerts $Node02_DIR $Node02_KEY $Node02_CSR $Node02_CNF $Server_CRT $Server_KEY $Node02_CRT
