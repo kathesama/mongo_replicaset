@@ -45,7 +45,7 @@ cd ..
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
-printf '\e[1;32m%-2s\e[m' "6 Generando Contenedores."
+printf '\e[1;32m%-2s\e[m' "6 Generando Contenedores." 
 printf "\n"
 printf '\e[1;34m%-6s\e[m' "6.1 Nodo 01"
 printf "\n"
@@ -60,7 +60,7 @@ docker run --name MGDB_replica01 \
 -v $(pwd)/config:/data/config \
 -e MONGO_INITDB_ROOT_USERNAME=$3 \
 -e MONGO_INITDB_ROOT_PASSWORD=$4 \
-mongo:4.1.14 \
+mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
 #-------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ sudo docker run --name MGDB_replica02 \
 -v $(pwd)/config:/data/config \
 -e MONGO_INITDB_ROOT_USERNAME=$3 \
 -e MONGO_INITDB_ROOT_PASSWORD=$4 \
-mongo:4.1.14 \
+mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
 #-------------------------------------------------------------------------------------------------
@@ -92,8 +92,8 @@ sudo docker run --name MGDB_replicaArbiter \
 -v $(pwd)/config:/data/config \
 -e MONGO_INITDB_ROOT_USERNAME=$3 \
 -e MONGO_INITDB_ROOT_PASSWORD=$4 \
-mongo:4.1.14 \
+mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
-printf '\e[1;32m%-2s\e[m' "Listo."
-printf "\n"
+printf '\e[1;32m%-2s\e[m' "Listo." 
+printf "\n" 
