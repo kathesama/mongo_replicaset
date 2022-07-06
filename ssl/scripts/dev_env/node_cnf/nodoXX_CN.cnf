@@ -14,7 +14,7 @@ countryName         = AR
 stateOrProvinceName         = Buenos Aires
 localityName                = Buenos Aires Capital Federal
 organizationName            = kathevigs
-commonName         = XXXXXXXXCHANGE_NAME_HEREXXXXXXXXX
+commonName         = prod.kathesama.com.ar
 emailAddress = kathesama@gmail.com
 ####################################################################
 [ server_req_extensions ]
