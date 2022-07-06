@@ -20,7 +20,7 @@ else
 fi
 
 #-------------------------------------------------------------------------------------------------
-printf '\e[1;32m%-6s\e[m' "2 Eliminando archivos innnecesarios de la carpeta ssl..."
+printf '\e[1;32m%-6s\e[m' "2 Eliminando archivos innecesarios de la carpeta ssl..."
 printf "\n"
 sudo rm -r ssl/scripts
 
@@ -60,7 +60,7 @@ docker run --name MGDB_replica01 \
 -v $(pwd)/config:/data/config \
 -e MONGO_INITDB_ROOT_USERNAME=$3 \
 -e MONGO_INITDB_ROOT_PASSWORD=$4 \
-mongo:4.4.6-bionic \
+mongo:4.4.14 \
 mongod --config /data/config/serverCluster.conf
 
 #-------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ sudo docker run --name MGDB_replica02 \
 -v $(pwd)/config:/data/config \
 -e MONGO_INITDB_ROOT_USERNAME=$3 \
 -e MONGO_INITDB_ROOT_PASSWORD=$4 \
-mongo:4.4.6-bionic \
+mongo:4.4.14 \
 mongod --config /data/config/serverCluster.conf
 
 #-------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ sudo docker run --name MGDB_replicaArbiter \
 -v $(pwd)/config:/data/config \
 -e MONGO_INITDB_ROOT_USERNAME=$3 \
 -e MONGO_INITDB_ROOT_PASSWORD=$4 \
-mongo:4.4.6-bionic \
+mongo:4.4.14 \
 mongod --config /data/config/serverCluster.conf
 
 printf '\e[1;32m%-2s\e[m' "Listo."
