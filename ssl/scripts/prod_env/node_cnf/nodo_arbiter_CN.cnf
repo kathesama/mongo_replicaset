@@ -31,8 +31,6 @@ extendedKeyUsage = clientAuth, serverAuth
 [ alternate_names ]
 IP.1 = 127.0.0.1
 IP.2 = ::1
-IP.3 = localhost
-
 DNS.1 = kathesama.com.ar
 DNS.2 = prod.kathesama.com.ar
 DNS.3 = *.kathesama.com.ar
