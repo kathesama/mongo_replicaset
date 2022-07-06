@@ -45,7 +45,7 @@ cd ..
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
-printf '\e[1;32m%-2s\e[m' "6 Generando Contenedores." 
+printf '\e[1;32m%-2s\e[m' "6 Generando Contenedores."
 printf "\n"
 printf '\e[1;34m%-6s\e[m' "6.1 Nodo 01"
 printf "\n"
@@ -54,7 +54,7 @@ docker run --name MGDB_replica01 \
 -p 27017:27017 \
 --restart always \
 -e "TZ=America/Argentina/Buenos_Aires" \
--e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=1' \
+-e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=2' \
 -v $(pwd)/data/replica01:/data/db \
 -v $(pwd)/ssl/nodo01:/data/ssl \
 -v $(pwd)/config:/data/config \
@@ -70,7 +70,7 @@ sudo docker run --name MGDB_replica02 \
 -p 27018:27017 \
 --restart always \
 -e "TZ=America/Argentina/Buenos_Aires" \
--e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=1' \
+-e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=2' \
 -v $(pwd)/data/replica02:/data/db \
 -v $(pwd)/ssl/nodo02:/data/ssl \
 -v $(pwd)/config:/data/config \
@@ -86,7 +86,7 @@ sudo docker run --name MGDB_replicaArbiter \
 -p 27019:27017 \
 --restart always \
 -e "TZ=America/Argentina/Buenos_Aires" \
--e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=1' \
+-e MONGODB_EXTRA_FLAGS='--wiredTigerCacheSizeGB=2' \
 -v $(pwd)/data/replicaarbiter:/data/db \
 -v $(pwd)/ssl/nodo_arbiter:/data/ssl \
 -v $(pwd)/config:/data/config \
@@ -95,5 +95,5 @@ sudo docker run --name MGDB_replicaArbiter \
 mongo:4.4.6-bionic \
 mongod --config /data/config/serverCluster.conf
 
-printf '\e[1;32m%-2s\e[m' "Listo." 
-printf "\n" 
+printf '\e[1;32m%-2s\e[m' "Listo."
+printf "\n"
