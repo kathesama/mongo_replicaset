@@ -27,7 +27,7 @@ nsComment            = "OpenSSL Generated Certificate"
 extendedKeyUsage = clientAuth, serverAuth
 ####################################################################
 
-#here you can set your prefered IP pool, each one should have a config mongodb server
+#here you can set your preferred IP pool, each one should have a config mongodb server
 [ alternate_names ]
 IP.1 = 127.0.0.1
 IP.2 = ::1
